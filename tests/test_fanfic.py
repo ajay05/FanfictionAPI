@@ -15,7 +15,7 @@ class TestFanfic(unittest.TestCase):
         self.mobile_fic_url = 'https://m.fanfiction.net/s/10262834/1/The-Consuming-Desert'
         self.crossover_url = 'https://www.fanfiction.net/s/11193694/1/The-Hidden-Side-Of-Me-You-Never-Knew'
 
-        self.fic_file_name = 'consuming_desert.html'
+        self.fic_file_name = 'fics/consuming_desert.html'
         self.fic_html = open(self.fic_file_name, 'r').read()
         self.fic = fanfic.Fanfic(self.fic_url, self.fic_html)
 
@@ -77,7 +77,7 @@ class TestFanfic(unittest.TestCase):
 
     def test_characters_when_pairings_exist(self):
         fic = fanfic.Fanfic('https://www.fanfiction.net/s/11008652/1/Fantiality-Infinity',
-                            open('pairings1.html').read())
+                            open('fics/pairings1.html').read())
 
         characters = fic.get_characters()
         for character in ['Link', 'OC', 'Dark Link', 'Malon']:
@@ -85,7 +85,7 @@ class TestFanfic(unittest.TestCase):
 
     def test_pairings(self):
         fic = fanfic.Fanfic('https://www.fanfiction.net/s/11008652/1/Fantiality-Infinity',
-                            open('pairings1.html').read())
+                            open('fics/pairings1.html').read())
 
         pairings = fic.get_pairings()
         self.assertIn('Link', pairings[0])
@@ -95,7 +95,7 @@ class TestFanfic(unittest.TestCase):
 
     def test_single_pairing(self):
         fic = fanfic.Fanfic('https://www.fanfiction.net/s/11008652/1/Fantiality-Infinity',
-                            open('single_pairing_test.html').read())
+                            open('fics/single_pairing_test.html').read())
 
         pairings = fic.get_pairings()
         self.assertIn('Link', pairings[0])
@@ -123,13 +123,13 @@ class TestFanfic(unittest.TestCase):
     def test_get_updated(self):
         self.assertEqual(date.fromtimestamp(1427508274), self.fic.get_updated())
         not_updated_fic = fanfic.Fanfic('https://www.fanfiction.net/s/11008652/1/Fantiality-Infinity',
-                                        open('single_pairing_test.html').read())
+                                        open('fics/single_pairing_test.html').read())
         self.assertEqual(date.fromtimestamp(1422594060), not_updated_fic.get_updated())
 
     def test_published(self):
         self.assertEqual(date.fromtimestamp(1397299783), self.fic.get_published())
         not_updated_fic = fanfic.Fanfic('https://www.fanfiction.net/s/11008652/1/Fantiality-Infinity',
-                                        open('single_pairing_test.html').read())
+                                        open('fics/single_pairing_test.html').read())
         self.assertEqual(date.fromtimestamp(1422594060), not_updated_fic.get_published())
 
     def test_reviews_url(self):
