@@ -50,6 +50,24 @@ class TestCategory(unittest.TestCase):
         self.category.set_length_filter('> 1K words')
         self.assertIn('len=1', self.category.build_filtered_url())
 
+    def test_status(self):
+        self.category.set_status_filter('Complete')
+        self.assertIn('s=2', self.category.build_filtered_url())
+
+    def test_worlds(self):
+        self.category.set_world_filter('Four Swords', False)
+        self.assertIn('_v1=159', self.category.build_filtered_url())
+        self.category.set_world_filter('Four Swords', True)
+        self.assertIn('v1=159', self.category.build_filtered_url())
+
+    def test_characters(self):
+        self.category.set_character_filter('Link', 'B', False)
+        self.assertIn('_c2=1315', self.category.build_filtered_url())
+
+    def test_with_pairing_filter(self):
+        self.category.set_with_pairing_filter(True, False)
+        self.assertIn('_pm=1', self.category.build_filtered_url())
+
 
 if __name__ == '__main__':
     unittest.main()
