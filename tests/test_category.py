@@ -12,7 +12,6 @@ class TestCategory(unittest.TestCase):
         self.category_url = 'https://www.fanfiction.net/game/Legend-of-Zelda/'
         self.category_src = open('categories/category.html', 'r').read()
         self.category = category.Category(self.category_url, self.category_src)
-        self.category_page_2 = self.category.next_page()
 
         self.single_page_url = 'https://www.fanfiction.net/game/Double-Dragon/'
         self.single_page_src = open('categories/single_page_category.html', 'r')
@@ -31,11 +30,25 @@ class TestCategory(unittest.TestCase):
     def test_two_pages(self):
         self.assertEqual(self.double_page_category.num_pages(), 2, 'page count is incorrect')
 
-    def test_next_page(self):
-        self.assertEqual(self.category_page_2.current_page_number(), 2)
-
     def test_genres(self):
-        self.assertEqual(len(self.category.genres()), 22, 'did not find all genres')
+        self.category.set_genre_filter('Adventure', 'A')
+        self.assertIn('g1=6', self.category.build_filtered_url())
+
+    def test_ratings(self):
+        self.category.set_rating_filter('Rated T')
+        self.assertIn('r=3', self.category.build_filtered_url())
+
+    def test_time_range(self):
+        self.category.set_time_range('Updated within 24 hours')
+        self.assertIn('t=1', self.category.build_filtered_url())
+
+    def test_languages(self):
+        self.category.set_language_filter('Deutsch')
+        self.assertIn('lan=4', self.category.build_filtered_url())
+
+    def test_length(self):
+        self.category.set_length_filter('> 1K words')
+        self.assertIn('len=1', self.category.build_filtered_url())
 
 
 if __name__ == '__main__':

@@ -20,6 +20,15 @@ user_partial_regex = '/u/\d+/.'
 compiled_fanfic_regex = re.compile(fanfiction_base_regex + story_partial_regex)
 
 
+def parameters(url):
+    try:
+        params = url.split('?')[1].split('&')
+        return [param for param in params if param != '']
+
+    except IndexError:
+        return []
+
+
 def is_url(string):
     return re.compile('^https?://').match(string)
 
@@ -64,3 +73,28 @@ def normalize_url(url):
     if https_regex.match(url):
         url = url.replace('https://', 'http://', 1)
     return url
+
+
+def get_param_args(options):
+        args = {}
+        for option in options:
+
+            number = option['value'].replace(',', '')
+            value = option.text.replace('\n', '')
+            args[value] = number
+
+        return args
+
+
+def extract_page_number(url):
+        params = parameters(url)
+
+        if len(params) == 0:
+            return 1
+
+        for param in params:
+            if param and param[0] == 'p':
+                return int(param[2:].replace(',', ''))
+
+        # just in case...
+        return 1
