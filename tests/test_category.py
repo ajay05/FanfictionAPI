@@ -22,7 +22,7 @@ class TestCategory(unittest.TestCase):
         self.double_page_category = category.Category(self.double_page_url, self.double_page_src)
 
     def test_num_pages(self):
-        self.assertEqual(self.category.num_pages(), 910, "page count is incorrect")
+        self.assertEqual(self.category.num_pages(), '910', "page count is incorrect")
 
     def test_num_pages_with_only_one_page(self):
         self.assertEqual(self.single_page_category.num_pages(), 1, 'page count is incorrect')
