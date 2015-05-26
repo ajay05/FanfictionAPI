@@ -47,7 +47,7 @@ class Author(object):
     '''
     title = self._html.select("#fs .favstories .stitle")
     self._favorite_fanfics = self._get_title_and_links(title)
-    return self._favorite_fanfics_
+    return self._favorite_fanfics
 
   def get_favorite_authors(self):  
     '''
