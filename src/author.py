@@ -26,7 +26,7 @@ class Author(object):
     self._author_country = None
     if url != None:
       self._url = urls.normalize_url(url)
-    self._html = Fanfic(url, html)._get_html()
+    self._html = Fanfic(self._url, html)._get_html()
 
 
   def get_fanfics(self):  
