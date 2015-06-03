@@ -37,7 +37,7 @@ class Author(object):
     if self._fanfics is None:
       title = self._html.select("#st .mystories .stitle")
       self._fanfics = self._get_title_and_links(title)
-      return self._fanfics
+    return self._fanfics
 
   def get_favorite_fanfics(self):  
     '''
@@ -47,7 +47,7 @@ class Author(object):
     if self._favorite_fanfics is None:
       title = self._html.select("#fs .favstories .stitle")
       self._favorite_fanfics = self._get_title_and_links(title)
-      return self._favorite_fanfics
+    return self._favorite_fanfics
 
   def get_favorite_authors(self):  
     '''
@@ -57,11 +57,14 @@ class Author(object):
     if self._favorite_authors is None:
       title = self._html.select("#fa dl a")
       self._author = self._get_title_and_links(title)
-      return self._author
+    return self._author
 
   def _get_title_and_links(self, title):
     '''
       Process titles and links
+
+      Returns:
+        JSON stream consisting of title and its corresponding link
     '''
     data = []
     for i in title:
@@ -77,10 +80,10 @@ class Author(object):
       table = self._html.select('#bio')[0].find_previous_sibling("table")
       profile_type = table.select('tr:nth-of-type(2) td a')[0].get_text()
       if (profile_type == 'Beta Profile'):
-        self._beta_reader = 1
+        self._beta_reader = True
       else:
-        self._beta_reader = 0
-      return self._beta_reader  
+        self._beta_reader = False 
+    return self._beta_reader  
 
   def get_join_date(self):  
     '''
@@ -90,7 +93,7 @@ class Author(object):
     if self._join_date is None:
       table = self._html.select('#bio')[0].find_previous_sibling("table")
       self._join_date = table.select('tr:nth-of-type(3) td span')[0].get_text()
-      return self._join_date
+    return self._join_date
 
   def get_last_profile_update(self):  
     '''
@@ -100,7 +103,7 @@ class Author(object):
     if self._profile_update_date is None:
       table = self._html.select('#bio')[0].find_previous_sibling("table")
       self._profile_update_date = table.select('tr:nth-of-type(3) td span:nth-of-type(2)')[0].get_text()
-      return self._profile_update_date
+    return self._profile_update_date
 
   def get_id(self):  
     '''
@@ -115,7 +118,7 @@ class Author(object):
         self._author_id = result[1].split(":")[1].strip()
       else:
         self._author_id = -1  
-      return self._author_id 
+    return self._author_id 
 
   def get_country(self):  
     '''
@@ -125,5 +128,4 @@ class Author(object):
     if self._author_country is None:
       table = self._html.select('#bio')[0].find_previous_sibling("table")
       self._author_country = table.select('tr:nth-of-type(3) td img')[0].attrs['title']
-      return self._author_country
-
+    return self._author_country
