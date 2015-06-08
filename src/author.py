@@ -17,6 +17,7 @@ class Author(object):
     Constructor
     """
     self._fanfics = None
+    self._fanfics_urls = [] 
     self._favorite_fanfics = None
     self._favorite_authors = None
     self._beta_reader = None
@@ -24,6 +25,7 @@ class Author(object):
     self._profile_update_date = None
     self._author_id = None
     self._author_country = None
+    self._base_url = 'https://www.fanfiction.net/'
     if url != None:
       self._url = urls.normalize_url(url)
     self._html = Fanfic(self._url, html)._get_html()
@@ -36,8 +38,8 @@ class Author(object):
     '''
     if self._fanfics is None:
       title = self._html.select("#st .mystories .stitle")
-      self._fanfics = self._get_title_and_links(title)
-    return self._fanfics
+      self._get_fanfic_urls(title)
+    return (Fanfic(url) for url in self._fanfics_urls)
 
   def get_favorite_fanfics(self):  
     '''
@@ -46,8 +48,8 @@ class Author(object):
     '''
     if self._favorite_fanfics is None:
       title = self._html.select("#fs .favstories .stitle")
-      self._favorite_fanfics = self._get_title_and_links(title)
-    return self._favorite_fanfics
+      self._get_fanfic_urls(title)
+    return (Fanfic(url) for url in self._fanfics_urls)
 
   def get_favorite_authors(self):  
     '''
@@ -56,20 +58,18 @@ class Author(object):
     '''
     if self._favorite_authors is None:
       title = self._html.select("#fa dl a")
-      self._author = self._get_title_and_links(title)
-    return self._author
+      self._get_fanfic_urls(title)
+    return (Fanfic(url) for url in self._fanfics_urls)
 
-  def _get_title_and_links(self, title):
+  def _get_fanfic_urls(self, title):
     '''
       Process titles and links
 
       Returns:
         JSON stream consisting of title and its corresponding link
     '''
-    data = []
     for i in title:
-        data.append([i.get_text(), i.attrs['href']])
-    return json.dumps(data)
+        self._fanfics_urls.append(self._base_url + i.attrs['href'])
 
   def is_beta_reader(self):  
     '''
@@ -129,3 +129,4 @@ class Author(object):
       table = self._html.select('#bio')[0].find_previous_sibling("table")
       self._author_country = table.select('tr:nth-of-type(3) td img')[0].attrs['title']
     return self._author_country
+
