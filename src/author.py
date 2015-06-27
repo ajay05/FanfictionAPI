@@ -25,7 +25,6 @@ class Author(object):
     self._profile_update_date = None
     self._author_id = None
     self._author_country = None
-    self._base_url = 'https://www.fanfiction.net/'
     if url != None:
       self._url = urls.normalize_url(url)
     self._html = Fanfic(self._url, html)._get_html()
@@ -69,7 +68,7 @@ class Author(object):
         JSON stream consisting of title and its corresponding link
     '''
     for i in title:
-        self._fanfics_urls.append(self._base_url + i.attrs['href'])
+        self._fanfics_urls.append(urls.fanfiction_base_url + i.attrs['href'])
 
   def is_beta_reader(self):  
     '''
