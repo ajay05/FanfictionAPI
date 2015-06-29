@@ -1,7 +1,7 @@
 import requests
 
 from bs4 import BeautifulSoup
-from src import urls
+from FanfictionAPI import urls
 
 
 class Listing(object):
@@ -61,7 +61,7 @@ class Listing(object):
         Get the next page in the category, or None if on the last page
 
         Returns:
-            Category: next page in category
+            CategoryListing: next page in category
         """
         if self.current_page_number() == self.num_pages():
             return None
@@ -72,7 +72,7 @@ class Listing(object):
         Get the previous page in the category, or None if on the first page
 
         Returns:
-            Category: previous page in the category
+            CategoryListing: previous page in the category
         """
         if self.current_page_number() == 1:
             return None
@@ -86,7 +86,7 @@ class Listing(object):
             page_number (int): number of the desired page
 
         Returns:
-            Category: the desired page
+            CategoryListing: the desired page
         """
 
         self._params[self._page_key] = page_number
@@ -135,7 +135,7 @@ class Listing(object):
 
     def _set_filter(self, filter_name, option, selection=None, with_filter=True):
         """
-        Set a filter for the Category by modifying the query params
+        Set a filter for the CategoryListing by modifying the query params
 
         Args:
             filter_name (str): The name of the filter to set, as used in fanfiction.net's source

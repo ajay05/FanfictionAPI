@@ -1,14 +1,13 @@
 __author__ = 'akotian'
 
 '''
-Autor class
+Author class
 '''
 import requests
 from bs4 import BeautifulSoup, SoupStrainer
 import json
-import urls
-import re
-from fanfic import Fanfic
+from FanfictionAPI import urls
+from FanfictionAPI.fanfic import Fanfic
 
 class Author(object):
 
@@ -16,6 +15,7 @@ class Author(object):
     """
     Constructor
     """
+    self._html = None
     self._fanfics = None
     self._fanfics_urls = [] 
     self._favorite_fanfics = None
@@ -27,7 +27,13 @@ class Author(object):
     self._author_country = None
     if url != None:
       self._url = urls.normalize_url(url)
-    self._html = Fanfic(self._url, html)._get_html()
+      if urls.classify_url(self._url) != urls.Author:
+        raise ValueError("Invalid url for Author class")
+
+    if self._html:
+      self._html = BeautifulSoup(self._html)
+    else:
+      self._html = BeautifulSoup(requests.get(self._url).text)
 
 
   def get_fanfics(self):  
@@ -58,7 +64,7 @@ class Author(object):
     if self._favorite_authors is None:
       title = self._html.select("#fa dl a")
       self._get_fanfic_urls(title)
-    return (Fanfic(url) for url in self._fanfics_urls)
+    return (Author(url) for url in self._fanfics_urls)
 
   def _get_fanfic_urls(self, title):
     '''

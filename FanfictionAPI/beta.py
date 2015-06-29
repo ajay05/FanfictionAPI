@@ -2,10 +2,11 @@ __author__ = 'jwsm'
 
 from bs4 import BeautifulSoup
 import requests
-from src import urls, listing
+from FanfictionAPI import urls
+from FanfictionAPI.listing import Listing
 
 
-class BetaList(listing.Listing):
+class BetaListing(Listing):
 
     def __init__(self, url, html=None):
         """
@@ -15,6 +16,9 @@ class BetaList(listing.Listing):
             url (string): url of the desired beta list
         """
         super().__init__(url, html)
+
+        if urls.classify_url(self._url) != urls.Beta:
+            raise ValueError("Invalid url for BetaListing object")
 
         # Necessary source for scraping filters disappears when they're set,
         # So we need the source for a page in the listing with no filters set
@@ -77,7 +81,7 @@ class BetaList(listing.Listing):
         Args:
             rating (str): The desired rating. '>>' may be used instead of '»'
         """
-        rating = BetaList.translate_rating(rating)
+        rating = BetaListing.translate_rating(rating)
         self._set_filter('beta_rating', rating)
 
     @staticmethod

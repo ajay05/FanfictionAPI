@@ -10,14 +10,21 @@ import re
 
 # like an enum
 Fanfic = "Fanfic"
+Author = "Author"
+Beta = "Beta"
+Category = "CategoryListing"
 
 fanfiction_base_url = "http://www.fanfiction.net"
 
 fanfiction_base_regex = '^https?://(www|m)\.fanfiction\.net'
 story_partial_regex = '/s/\d+/\d+/.'
 user_partial_regex = '/u/\d+/.'
+beta_partial_regex = '/betareaders/.'
 
 compiled_fanfic_regex = re.compile(fanfiction_base_regex + story_partial_regex)
+compiled_user_regex = re.compile(fanfiction_base_regex + user_partial_regex)
+compiled_beta_regex = re.compile(fanfiction_base_regex + beta_partial_regex)
+other_regex = re.compile(fanfiction_base_regex + '/.+/.')
 
 
 def remove_params(url):
@@ -50,10 +57,17 @@ def classify_url(url):
 
         Possible results:
         Fanfic: An actual fanfic
+        Author: Author/user of the site
     """
 
     if compiled_fanfic_regex.match(url):
         return Fanfic
+    if compiled_user_regex.match(url):
+        return Author
+    if compiled_beta_regex.match(url):
+        return Beta
+    if other_regex.match(url):
+        return Category
     return None
 
 

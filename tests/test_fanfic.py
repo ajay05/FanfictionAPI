@@ -2,7 +2,7 @@ __author__ = 'jwsm'
 
 ''' Tests for Fanfic class '''
 
-from src import fanfic
+from FanfictionAPI import fanfic
 from datetime import date
 
 import unittest

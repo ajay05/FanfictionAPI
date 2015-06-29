@@ -3,11 +3,11 @@ __author__ = "akotian"
 ''' Tests for Author class '''
 
 import sys
-sys.path.append('../src')
-from author import Author
-from fanfic import Fanfic 
-import json
+sys.path.append('../FanfictionAPI')
+from FanfictionAPI.author import Author
+from FanfictionAPI.fanfic import Fanfic
 import unittest
+
 
 class TestAuthor(unittest.TestCase):
 
@@ -18,13 +18,13 @@ class TestAuthor(unittest.TestCase):
     self.author = Author(self.author_url, self.author_file_html)
 
   def test_get_fanfics(self):  
-    self.assertIsInstance(self.author.get_fanfics().next(), Fanfic, 'Correct type returned')
+    self.assertIsInstance(next(self.author.get_fanfics()), Fanfic, 'Correct type returned')
 
   def test_get_favorite_fanfics(self):  
-    self.assertIsInstance(self.author.get_favorite_fanfics().next(), Fanfic, 'Correct type returned')
+    self.assertIsInstance(next(self.author.get_favorite_fanfics()), Fanfic, 'Correct type returned')
 
   def test_get_favorite_authors(self):  
-    self.assertIsInstance(self.author.get_favorite_authors().next(), Fanfic, 'Correct type returned')
+    self.assertIsInstance(next(self.author.get_favorite_authors()), Author, 'Correct type returned')
 
   def test_is_beta_reader(self):  
     expected = 1 

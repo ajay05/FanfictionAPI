@@ -1,9 +1,10 @@
 __author__ = 'jwsm'
 
-from src import urls, listing
+from FanfictionAPI import urls
+from FanfictionAPI.listing import Listing
 
 
-class Category(listing.Listing):
+class CategoryListing(Listing):
     """
     Represents a category, as found at http://www.fanfiction.net/medium/category
     Do not access member variables directly
@@ -17,6 +18,10 @@ class Category(listing.Listing):
             url (str): The url of the category to construct
         """
         super().__init__(url, html)
+        if urls.classify_url(self._url) != urls.Category:
+            print(self._url)
+            raise ValueError("Invalid url for CategoryListing object")
+
         self._param_keys = {
             'censorid': 'r',
             '_genreid1': 'g',
@@ -96,40 +101,6 @@ class Category(listing.Listing):
         chars = self._get_filter_options('characterid1')
         chars[0] = chars[0][:-4].strip()
         return chars
-
-    '''
-    def _set_filter(self, filter_name, option, selection=None, with_filter=True):
-        """
-        Set a filter for the Category by modifying the query params
-
-        Args:
-            filter_name (str): The name of the filter to set, as used in fanfiction.net's source
-            option (str): The value that the filter should take. Possibly options may be found by calling
-                          the appropriate accessor method
-            selection (str): 'A', 'B', 'C', or 'D'. Which option to set
-            with_filter (boolean): if True, method will set the With filter. If not, method will set the
-                                   Without filter
-        """
-        selection_dict = {
-            'A': '1',
-            'B': '2',
-            'C': '3',
-            'D': '4',
-        }
-
-        if option not in self._get_filter_options(filter_name):
-            raise ValueError('%s is not recognized' % option)
-
-        key = self._param_keys[filter_name]
-
-        if not with_filter:
-            key = '_' + key
-
-        if selection:
-            key += selection_dict[selection]
-
-        self._params[key] = self._get_filter_options(filter_name)[option]
-    '''
 
     def set_sorting_method(self, option):
         """

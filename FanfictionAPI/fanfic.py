@@ -10,7 +10,7 @@ import re
 import requests
 
 from bs4 import BeautifulSoup, SoupStrainer
-from src import urls
+from FanfictionAPI import urls
 
 
 class Fanfic(object):
@@ -28,6 +28,8 @@ class Fanfic(object):
         """
 
         self._url = urls.normalize_url(url)
+        if urls.classify_url(self._url) != urls.Fanfic:
+            raise ValueError("Invalid url for Fanfic object")
 
         if html:
             self._html = BeautifulSoup(html)

@@ -1,8 +1,8 @@
 __author__ = 'jwsm'
 
-'''Tests for Category class'''
+'''Tests for CategoryListing class'''
 
-from src import category
+from FanfictionAPI import categorylisting
 import unittest
 
 
@@ -11,15 +11,15 @@ class TestCategory(unittest.TestCase):
     def setUp(self):
         self.category_url = 'https://www.fanfiction.net/game/Legend-of-Zelda/'
         self.category_src = open('categories/category.html', 'r').read()
-        self.category = category.Category(self.category_url, self.category_src)
+        self.category = categorylisting.CategoryListing(self.category_url, self.category_src)
 
         self.single_page_url = 'https://www.fanfiction.net/game/Double-Dragon/'
         self.single_page_src = open('categories/single_page_category.html', 'r')
-        self.single_page_category = category.Category(self.single_page_url, self.single_page_src)
+        self.single_page_category = categorylisting.CategoryListing(self.single_page_url, self.single_page_src)
 
         self.double_page_url = 'https://www.fanfiction.net/game/Lego/'
         self.double_page_src = open('categories/double_page_category.html', 'r')
-        self.double_page_category = category.Category(self.double_page_url, self.double_page_src)
+        self.double_page_category = categorylisting.CategoryListing(self.double_page_url, self.double_page_src)
 
     def test_num_pages(self):
         self.assertEqual(self.category.num_pages(), '910', "page count is incorrect")

@@ -1,13 +1,13 @@
 __author__ = 'jwsm'
 
-from src import beta
+from FanfictionAPI import beta
 import unittest
 
 
 class TestBetas(unittest.TestCase):
 
     def setUp(self):
-        self.beta_list = beta.BetaList('https://www.fanfiction.net/betareaders/game/Final-Fantasy-X/',
+        self.beta_list = beta.BetaListing('https://www.fanfiction.net/betareaders/game/Final-Fantasy-X/',
                                            open('betas_src/beta_page_base.html', 'r').read())
 
     def test_language_filter(self):
