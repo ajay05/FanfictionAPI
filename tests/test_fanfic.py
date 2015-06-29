@@ -121,16 +121,16 @@ class TestFanfic(unittest.TestCase):
         self.assertEqual(10262834, self.fic.get_id())
 
     def test_get_updated(self):
-        self.assertEqual(date.fromtimestamp(1427508274), self.fic.get_updated())
+        self.assertEqual(date.fromtimestamp(1427508274), self.fic.get_updated_date())
         not_updated_fic = fanfic.Fanfic('https://www.fanfiction.net/s/11008652/1/Fantiality-Infinity',
                                         open('fics/single_pairing_test.html').read())
-        self.assertEqual(date.fromtimestamp(1422594060), not_updated_fic.get_updated())
+        self.assertEqual(date.fromtimestamp(1422594060), not_updated_fic.get_updated_date())
 
     def test_published(self):
-        self.assertEqual(date.fromtimestamp(1397299783), self.fic.get_published())
+        self.assertEqual(date.fromtimestamp(1397299783), self.fic.get_published_date())
         not_updated_fic = fanfic.Fanfic('https://www.fanfiction.net/s/11008652/1/Fantiality-Infinity',
                                         open('fics/single_pairing_test.html').read())
-        self.assertEqual(date.fromtimestamp(1422594060), not_updated_fic.get_published())
+        self.assertEqual(date.fromtimestamp(1422594060), not_updated_fic.get_published_date())
 
     def test_reviews_url(self):
         self.assertEqual('http://www.fanfiction.net/r/10262834/', self.fic.get_reviews_url())

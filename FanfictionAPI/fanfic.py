@@ -308,7 +308,7 @@ class Fanfic(object):
 
         return self._follows
 
-    def get_published(self):
+    def get_published_date(self):
         """
         Returns:
             Date: The date the fanfic was published
@@ -325,7 +325,7 @@ class Fanfic(object):
                 self._updated = self._published = datetime.date.fromtimestamp(int(dates[0][date_key]))
         return self._published
 
-    def get_updated(self):
+    def get_updated_date(self):
         """
         Returns:
             Date: The date the fanfic was updated.
@@ -334,7 +334,7 @@ class Fanfic(object):
         (Note: This function has the side-effect of initializing the date the fanfic was published)
         """
         if not self._updated:
-            self.get_published()  # this will initialized self._updated
+            self.get_published_date()  # this will initialized self._updated
         return self._updated
 
     def get_id(self):

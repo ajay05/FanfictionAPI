@@ -5,7 +5,6 @@ Author class
 '''
 import requests
 from bs4 import BeautifulSoup, SoupStrainer
-import json
 from FanfictionAPI import urls
 from FanfictionAPI.fanfic import Fanfic
 
