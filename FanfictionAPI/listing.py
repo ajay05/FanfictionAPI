@@ -1,7 +1,8 @@
 import requests
 
 from bs4 import BeautifulSoup
-from FanfictionAPI import urls
+#from FanfictionAPI import urls
+import urls
 
 
 class Listing(object):

@@ -1,9 +1,15 @@
+# -*- coding: utf-8 -*-
 __author__ = 'jwsm'
 
 from bs4 import BeautifulSoup
 import requests
-from FanfictionAPI import urls
-from FanfictionAPI.listing import Listing
+import urls
+#import listing
+#import listing.Listing
+from listing import Listing
+#from FanfictionAPI import urls
+#from FanfictionAPI.listing import Listing
+import pprint
 
 
 class BetaListing(Listing):
@@ -15,7 +21,7 @@ class BetaListing(Listing):
         Args:
             url (string): url of the desired beta list
         """
-        super().__init__(url, html)
+        super(BetaListing, self).__init__(url, html)
 
         if urls.classify_url(self._url) != urls.Beta:
             raise ValueError("Invalid url for BetaListing object")
@@ -109,5 +115,40 @@ class BetaListing(Listing):
         self._url = url
         return self._url
     '''
+    def author_profiles(self):
+        """
+        Returns all the users belonging to this listing 
+        """
+        base_author_url = "https://www.fanfiction.net/"
+        # https://www.fanfiction.net/betareaders/game/Flipnote-Studio/ 
+        # https://www.fanfiction.net/betareaders/game/Rune-Factory-A-Fantasy-Harvest-Moon/?&ppage=1
+        # https://www.fanfiction.net/betareaders/game/Tales-of-the-Abyss/?&ppage=2 
+        # If its more than 2 pages
+        num_of_pages = self._base_html.find_all("a", text="Last") 
+        if (len(num_of_pages) != 0):
+            print type(str(num_of_pages[0]))
+            print str(num_of_pages[0]).partition(';ppage=')[2].partition('\">')[0]
+        #pp.pprint(self._base_html)
+        table = self._base_html.select("#content_wrapper_inner table")
+        author = self._base_html.select("#content_wrapper_inner table tr td a")
+        #author = self._base_html.find("#content_wrapper_inner table tr td a")
+        #author = table.select("tr td a").attrs["href"]
+        print author
+        #for i in author:
+            #print i.attrs["href"]
 
+        #print table 
+        #return 'Hello World!'
 
+b = BetaListing("https://www.fanfiction.net/betareaders/game/Final-Fantasy-X/") 
+#b= BetaListing('https://www.fanfiction.net/betareaders/game/Final-Fantasy-X/', 
+                #open('betas_src/beta_page_base.html', 'r').read())
+pp = pprint.PrettyPrinter(indent=4)
+#pp.pprint(dir(b))
+#pp.pprint(dir(b.genres.__str__))
+pp.pprint(b.author_profiles())
+#pp.pprint(b.genres())
+#pp.pprint(b.author_profiles)
+#print b.author_profiles
+
+#print b
