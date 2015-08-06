@@ -1,8 +1,14 @@
+# -*- coding: utf-8 -*-
 __author__ = 'jwsm'
 
+import sys
+sys.path.append('../FanfictionAPI/')
+import re
+from bs4 import BeautifulSoup
+import requests
 from FanfictionAPI import urls
 from FanfictionAPI.listing import Listing
-
+from FanfictionAPI.author import Author
 
 class CategoryListing(Listing):
     """
@@ -17,10 +23,14 @@ class CategoryListing(Listing):
         Args:
             url (str): The url of the category to construct
         """
-        super().__init__(url, html)
+        super(CategoryListing, self).__init__(url, html)
         if urls.classify_url(self._url) != urls.Category:
             print(self._url)
             raise ValueError("Invalid url for CategoryListing object")
+
+        self._base_html =  BeautifulSoup(requests.get(url).text)
+        base_url = urls.remove_params(self._url)
+        self._base_url = base_url
 
         self._param_keys = {
             'censorid': 'r',
@@ -241,3 +251,34 @@ class CategoryListing(Listing):
         Remove all filters, except for page number
         """
         self._params = {'p': str(self.current_page_number())}
+
+    def get_author(self):
+        """
+        Returns all the users 
+        """
+        base_url = "https://www.fanfiction.net"
+        num_of_pages = 0
+        last_page = 0
+        next_page = 0
+        author_urls = []
+        last_page = self._base_html.find_all("a", text="Last") 
+        if (len(last_page) != 0):
+            num_of_pages = int(str(last_page[0]).partition(';p=')[2].partition('\">')[0])
+        else:
+            next_page = self._base_html.find_all("a", text="Next »") 
+            if (len(next_page) != 0):
+                num_of_pages = 2 
+            else:    
+                num_of_pages = 1
+
+        for i in range(1, num_of_pages+1): 
+            url = self._base_url + '/?p=' + str(i)
+            self._base_html = BeautifulSoup(requests.get(url).text)
+            author = self._base_html.select(".z-list a")
+            for i in author:
+                match = re.search('"\/u\/(\d)*\/(\S)*"' , str(i))
+                if match != None:
+                    user_id = match.group(0).replace('\"', '')
+                    author_urls.append(base_url + user_id)
+        return (Author(url) for url in author_urls)
+
